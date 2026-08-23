@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca Educativa | Visualizador PDF</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: var(--font-family, system-ui, -apple-system, sans-serif);
+            background: var(--color-bg, #ffffff);
+            color: var(--color-text, #1f2937);
+            line-height: 1.6;
+        }
+        
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--color-primary, #22c55e), var(--color-primary-dark, #16a34a));
+            color: var(--color-bg, #ffffff);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        header h1 {
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        nav {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        nav a {
+            color: var(--color-bg, #ffffff);
+            text-decoration: none;
+            font-size: 0.9rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+        
+        nav a:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        
+        /* Toolbar */
+        .pdf-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background: var(--color-bg, #ffffff);
+            border-bottom: 2px solid var(--color-primary-light, #dcfce7);
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .pdf-toolbar .left-controls {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+        
+        .pdf-toolbar .page-info {
+            color: var(--color-text-secondary, #6b7280);
+            font-size: 0.95rem;
+        }
+        
+        .pdf-toolbar .right-controls {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+        
+        .pdf-toolbar button {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--color-primary-light, #dcfce7);
+            border-radius: 6px;
+            background: var(--color-bg, #ffffff);
+            color: var(--color-text, #1f2937);
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+        }
+        
+        .pdf-toolbar button:hover {
+            background: var(--color-primary, #22c55e);
+            color: var(--color-bg, #ffffff);
+        }
+        
+        .pdf-toolbar button:disabled {
+            background: var(--color-text-secondary, #9ca3af);
+            cursor: not-allowed;
+        }
+        
+        .pdf-toolbar button.active {
+            background: var(--color-accent, #eab308);
+            color: var(--color-text, #1f2937);
+        }
+        
+        .pdf-toolbar input[type="number"] {
+            width: 80px;
+            padding: 0.3rem 0.5rem;
+            border: 1px solid var(--color-primary-light, #dcfce7);
+            border-radius: 4px;
+            text-align: center;
+        }
+        
+        .pdf-toolbar select {
+            padding: 0.3rem 0.5rem;
+            border: 1px solid var(--color-primary-light, #dcfce7);
+            border-radius: 4px;
+            background: var(--color-bg, #ffffff);
+        }
+        
+        /* Viewer Container */
+        .pdf-viewer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+        
+        #pdf-canvas {
+            width: 100%;
+            max-width: 100%;
+            border: 1px solid var(--color-primary-light, #dcfce7);
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            background: #f9fafb;
+        }
+        
+        .pdf-loading {
+            text-align: center;
+            padding: 3rem;
+            color: var(--color-text-secondary, #6b7280);
+        }
+        
+        .pdf-error {
+            text-align: center;
+            padding: 2rem;
+            color: #dc2626;
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            border-radius: 8px;
+        }
+        
+        .pdf-title {
+            text-align: center;
+            margin-bottom: 1rem;
+            color: var(--color-primary-dark, #16a34a);
+            font-size: 1.5rem;
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--color-primary-dark, #16a34a);
+            color: var(--color-bg, #ffffff);
+            text-align: center;
+            padding: 1rem;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .pdf-toolbar {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .pdf-toolbar .left-controls,
+            .pdf-toolbar .right-controls {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .pdf-toolbar {
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <h1>📚 Biblioteca Educativa</h1>
+        <nav>
+            <a href="../index.html">🏠 Inicio</a>
+            <a href="../libros/index.html">📚 Libros</a>
+            <a href="../temas/index.html">📂 Temas</a>
+            <a href="../autores/index.html">👨‍🏫 Autores</a>
+            <a href="../blog/index.html">📰 Blog</a>
+        </nav>
+    </header>
+
+    <!-- PDF Title -->
+    <div class="pdf-title" id="pdfTitle">
+        Cargando documento...
+    </div>
+
+    <!-- Toolbar -->
+    <div class="pdf-toolbar">
+        <div class="left-controls">
+            <button id="prevPage" disabled>◀ Anterior</button>
+            <span class="page-info">
+                <span id="currentPage">1</span> / <span id="totalPages">‒</span>
+            </span>
+            <button id="nextPage" disabled">Siguiente ▶</button>
+            <span>| Ir a:</span>
+            <input type="number" id="pageNum" min="1" value="1" style="width: 60px;">
+        </div>
+        <div class="right-controls">
+            <button id="zoomOut">−</button>
+            <span id="zoomLevel">100%</span>
+            <button id="zoomIn">+</button>
+            <button id="zoomFit">Ajustar</button>
+            <button id="downloadPdf">⬇ Descargar</button>
+        </div>
+    </div>
+
+    <!-- Viewer Container -->
+    <div class="pdf-viewer-container">
+        <div id="pdfLoading" class="pdf-loading">
+            Cargando PDF...
+        </div>
+        <canvas id="pdf-canvas" style="display: none;"></canvas>
+        <div id="pdfError" class="pdf-error" style="display: none;"></div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        © 2024 Biblioteca Educativa | Recursos gratuitos para educación
+    </footer>
+
+<script type="module">
+        // Load PDF.js from CDN
+        import * as pdfjsLib from 'https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.mjs';
+        
+        // Configuración PDF.js
+        const getPdfUrl = function() {
+            const params = new URLSearchParams(window.location.search);
+            let url = params.get('file') || '';
+            if (url && !url.startsWith('http')) {
+                url = new URL(url, window.location.href).href;
+            }
+            return url;
+        };
+
+        // Elementos DOM
+        const canvas = document.getElementById('pdf-canvas');
+        const ctx = canvas.getContext('2d');
+        const loadingEl = document.getElementById('pdfLoading');
+        const errorEl = document.getElementById('pdfError');
+        const titleEl = document.getElementById('pdfTitle');
+        const prevBtn = document.getElementById('prevPage');
+        const nextBtn = document.getElementById('nextPage');
+        const pageNumInput = document.getElementById('pageNum');
+        const currentPageEl = document.getElementById('currentPage');
+        const totalPagesEl = document.getElementById('totalPages');
+        const zoomOutBtn = document.getElementById('zoomOut');
+        const zoomInBtn = document.getElementById('zoomIn');
+        const zoomFitBtn = document.getElementById('zoomFit');
+        const zoomLevelEl = document.getElementById('zoomLevel');
+        const downloadBtn = document.getElementById('downloadPdf');
+
+        let pdfDoc = null;
+        let currentPage = 1;
+        let currentScale = 1.25;
+        const pdfUrl = getPdfUrl();
+        let pdfFilename = decodeURIComponent(new URLSearchParams(window.location.search).get('file') || '').split('/').pop() || 'Documento.pdf';
+
+        // Set document title
+        titleEl.textContent = pdfFilename.replace(/_/g, ' ');
+
+        // Download handler
+        downloadBtn.onclick = function() {
+            window.open(pdfUrl, '_blank');
+        };
+
+        if (!pdfUrl) {
+            loadingEl.style.display = 'none';
+            errorEl.style.display = 'block';
+            errorEl.textContent = 'No se especificó ningún archivo PDF. Usa ?file=URL';
+            totalPagesEl.textContent = '0';
+        } else {
+            loadingEl.style.display = 'block';
+            pdfjsLib.getDocument(pdfUrl).promise.then(function(pdf) {
+                pdfDoc = pdf;
+                currentPage = 1;
+                currentPageEl.textContent = currentPage;
+                totalPagesEl.textContent = pdf.numPages;
+                pageNumInput.value = currentPage;
+
+                loadingEl.style.display = 'none';
+                canvas.style.display = 'block';
+
+                prevBtn.disabled = true;
+                nextBtn.disabled = pdf.numPages <= 1;
+
+                renderPage(currentPage);
+            }).catch(function(error) {
+                loadingEl.style.display = 'none';
+                canvas.style.display = 'none';
+                errorEl.style.display = 'block';
+                errorEl.textContent = 'Error loading PDF: ' + error.message;
+                totalPagesEl.textContent = '0';
+            });
+        }
+
+        function renderPage(pageNum) {
+            pdfDoc.getPage(pageNum).then(function(page) {
+                const viewport = page.getViewport({ scale: currentScale });
+                canvas.height = viewport.height;
+                canvas.width = viewport.width;
+
+                const renderContext = {
+                    canvasContext: ctx,
+                    viewport: viewport
+                };
+                page.render(renderContext).promise.then(function() {
+                    currentPageEl.textContent = currentPage;
+                    pageNumInput.value = currentPage;
+                    prevBtn.disabled = currentPage <= 1;
+                    nextBtn.disabled = currentPage >= pdfDoc.numPages;
+                    zoomLevelEl.textContent = Math.round(currentScale * 100) + '%';
+                });
+            });
+        }
+
+        prevBtn.onclick = function() {
+            if (currentPage > 1) {
+                currentPage--;
+                renderPage(currentPage);
+            }
+        };
+
+        nextBtn.onclick = function() {
+            if (currentPage < pdfDoc.numPages) {
+                currentPage++;
+                renderPage(currentPage);
+            }
+        };
+
+        pageNumInput.onchange = function() {
+            const page = parseInt(this.value);
+            if (page >= 1 && page <= pdfDoc.numPages) {
+                currentPage = page;
+                renderPage(currentPage);
+            } else {
+                this.value = currentPage;
+            }
+        };
+
+        zoomOutBtn.onclick = function() {
+            currentScale = Math.max(0.25, currentScale - 0.25);
+            renderPage(currentPage);
+        };
+
+        zoomInBtn.onclick = function() {
+            currentScale = Math.min(3.0, currentScale + 0.25);
+            renderPage(currentPage);
+        };
+
+        zoomFitBtn.onclick = function() {
+            currentScale = 1.0;
+            renderPage(currentPage);
+        };
+    </script>
+    </script>
+</body>
+</html>
