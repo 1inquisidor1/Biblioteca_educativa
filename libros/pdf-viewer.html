@@ -243,12 +243,11 @@
     </footer>
 
 <script type="module">
-        // Load PDF.js from CDN
+        // Load PDF.js from CORS-enabled CDN
         import * as pdfjsLib from 'https://esm.sh/pdfjs-dist@3.4.120/build/pdf.mjs';
-        // Worker from CORS-enabled CDN — prevents the viewer from hanging on "cargando"
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://esm.sh/pdfjs-dist@3.4.120/build/pdf.worker.mjs';
         
-        // Configuración PDF.js
+        // Configuración PDF.js — extract URL from query param
         const getPdfUrl = function() {
             const params = new URLSearchParams(window.location.search);
             let url = params.get('file') || '';
@@ -296,7 +295,7 @@
             totalPagesEl.textContent = '0';
         } else {
             loadingEl.style.display = 'block';
-            fetch(pdfUrl).then(function(r) { return r.blob(); }).then(function(blob) {
+            fetch(pdfUrl, { mode: 'cors', credentials: 'omit' }).then(function(r) { return r.blob(); }).then(function(blob) {
                 const pdfBlob = new Blob([blob], { type: 'application/pdf' });
                 const blobUrl = URL.createObjectURL(pdfBlob);
                 pdfjsLib.getDocument(blobUrl).promise.then(function(pdf) {
