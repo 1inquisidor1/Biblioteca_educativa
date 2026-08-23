@@ -1,7 +1,3 @@
-# PDFs - too large for GitHub
-*.pdf
-!libros/thumbnails/*.png
-
 # Node / tooling
 node_modules/
 *.log
