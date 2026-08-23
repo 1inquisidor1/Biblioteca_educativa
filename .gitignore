@@ -1,10 +1,9 @@
-# PDFs (largos) - opcional subir
-# libros/pdfs/*.pdf
+# PDFs - too large for GitHub
+*.pdf
+!libros/thumbnails/*.png
 
 # Node / tooling
 node_modules/
 *.log
-
-# Sistema
 .DS_Store
 Thumbs.db
