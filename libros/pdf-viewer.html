@@ -245,6 +245,8 @@
 <script type="module">
         // Load PDF.js from CDN
         import * as pdfjsLib from 'https://esm.sh/pdfjs-dist@3.4.120/build/pdf.mjs';
+        // Worker from CORS-enabled CDN — prevents the viewer from hanging on "cargando"
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://esm.sh/pdfjs-dist@3.4.120/build/pdf.worker.mjs';
         
         // Configuración PDF.js
         const getPdfUrl = function() {
@@ -294,26 +296,30 @@
             totalPagesEl.textContent = '0';
         } else {
             loadingEl.style.display = 'block';
-            pdfjsLib.getDocument(pdfUrl).promise.then(function(pdf) {
-                pdfDoc = pdf;
-                currentPage = 1;
-                currentPageEl.textContent = currentPage;
-                totalPagesEl.textContent = pdf.numPages;
-                pageNumInput.value = currentPage;
+            fetch(pdfUrl).then(function(r) { return r.blob(); }).then(function(blob) {
+                const pdfBlob = new Blob([blob], { type: 'application/pdf' });
+                const blobUrl = URL.createObjectURL(pdfBlob);
+                pdfjsLib.getDocument(blobUrl).promise.then(function(pdf) {
+                    pdfDoc = pdf;
+                    currentPage = 1;
+                    currentPageEl.textContent = currentPage;
+                    totalPagesEl.textContent = pdf.numPages;
+                    pageNumInput.value = currentPage;
 
-                loadingEl.style.display = 'none';
-                canvas.style.display = 'block';
+                    loadingEl.style.display = 'none';
+                    canvas.style.display = 'block';
 
-                prevBtn.disabled = true;
-                nextBtn.disabled = pdf.numPages <= 1;
+                    prevBtn.disabled = true;
+                    nextBtn.disabled = pdf.numPages <= 1;
 
-                renderPage(currentPage);
-            }).catch(function(error) {
-                loadingEl.style.display = 'none';
-                canvas.style.display = 'none';
-                errorEl.style.display = 'block';
-                errorEl.textContent = 'Error loading PDF: ' + error.message;
-                totalPagesEl.textContent = '0';
+                    renderPage(currentPage);
+                }).catch(function(error) {
+                    loadingEl.style.display = 'none';
+                    canvas.style.display = 'none';
+                    errorEl.style.display = 'block';
+                    errorEl.textContent = 'Error loading PDF: ' + error.message;
+                    totalPagesEl.textContent = '0';
+                });
             });
         }
 
