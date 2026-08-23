@@ -248,14 +248,20 @@
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://esm.sh/pdfjs-dist@3.4.120/build/pdf.worker.mjs';
         
         // Configuración PDF.js — extract URL from query param
-        const getPdfUrl = function() {
+        // Fix CORS: resolve raw.githubusercontent.com URLs to relative paths (same-origin)
+        function getPdfUrl() {
             const params = new URLSearchParams(window.location.search);
             let url = params.get('file') || '';
+            // If the URL is a GitHub raw URL, convert to relative path (same origin = no CORS)
+            if (url.includes('raw.githubusercontent.com') && url.includes('libros/pdfs/')) {
+                const filename = url.split('libros/pdfs/')[1].split('?')[0];
+                return `../pdfs/${filename}`;
+            }
             if (url && !url.startsWith('http')) {
                 url = new URL(url, window.location.href).href;
             }
             return url;
-        };
+        }
 
         // Elementos DOM
         const canvas = document.getElementById('pdf-canvas');
