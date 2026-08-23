@@ -1,3 +1,6 @@
+# PDFs - too large for GitHub repo (host via Releases)
+libros/pdfs/*.pdf
+
 # Node / tooling
 node_modules/
 *.log
