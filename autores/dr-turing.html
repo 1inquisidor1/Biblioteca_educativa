@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca Educativa | Dr. Alan Turing</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+    <style>
+        /* ===== Author profile styles ===== */
+        .author-hero {
+            background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+            color: var(--color-bg);
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .author-hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .author-hero p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* Profile header */
+        .author-profile {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        /* Avatar circle: green #22c55e with initials "AT" */
+        .author-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background-color: var(--color-primary);
+            color: var(--color-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin: 0 auto 1rem;
+            box-shadow: 0 4px 12px var(--color-shadow);
+        }
+
+        .author-name {
+            font-size: 1.8rem;
+            color: var(--color-primary-dark);
+            margin-bottom: 0.25rem;
+        }
+
+        .author-specialty {
+            color: var(--color-text-secondary);
+            font-size: 1rem;
+            font-style: italic;
+            margin-bottom: 1rem;
+        }
+
+        /* Yellow badge: "Libros: 3" */
+        .author-stats {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .stat-badge {
+            background-color: var(--color-accent);
+            color: var(--color-text);
+            font-weight: bold;
+            font-size: 0.95rem;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .stat-badge .number {
+            background-color: var(--color-primary);
+            color: var(--color-bg);
+            font-size: 1.1rem;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Bio layout */
+        .author-bio {
+            max-width: 720px;
+            margin: 0 auto;
+            text-align: left;
+            color: var(--color-text-secondary);
+        }
+
+        .author-bio p {
+            margin-bottom: 1.25rem;
+            line-height: 1.8;
+        }
+
+        .author-bio p:first-letter {
+            font-size: 2.2em;
+            font-weight: bold;
+            color: var(--color-primary);
+            float: left;
+            line-height: 1;
+            margin: 0.1em 0.12em 0 0;
+            padding-right: 0.05em;
+        }
+
+        /* Book list */
+        .author-books {
+            max-width: 960px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .book-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .book-item {
+            background: var(--color-bg);
+            border: 1px solid var(--color-border);
+            border-radius: var(--border-radius);
+            padding: 0.6rem 1rem;
+            box-shadow: 0 2px 6px var(--color-shadow);
+        }
+
+        .book-item a {
+            color: var(--color-primary-dark);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .book-item a:hover {
+            color: var(--color-primary);
+        }
+
+        @media (max-width: 768px) {
+            .author-hero h2 { font-size: 2rem; }
+            .author-profile { padding: 1rem; }
+            .author-bio { text-align: left; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>📚 Biblioteca Educativa</h1>
+        <nav>
+            <a href="../index.html">Inicio</a>
+            <a href="../libros/">📚 Libros</a>
+            <a href="../temas/">📂 Temas</a>
+            <a href="index.html">👨‍🏫 Autores</a>
+            <a href="../blog/">📰 Blog</a>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero -->
+        <section class="author-hero">
+            <h2>Dr. Alan Turing</h2>
+            <p>Especialidad: Inteligencia Artificial</p>
+        </section>
+
+        <!-- Profile header -->
+        <section class="author-profile">
+            <div class="author-avatar">AT</div>
+            <h3 class="author-name">Dr. Alan Turing</h3>
+            <p class="author-specialty">Especialista en Criptografía y Ciencias de la Computación</p>
+
+            <div class="author-stats">
+                <span class="stat-badge"><span class="number">3</span> Libros:</span>
+                <span class="stat-badge"><span class="number">⚑</span> Destacado</span>
+            </div>
+        </section>
+
+        <!-- Bio -->
+        <section class="author-bio">
+            <p>El Dr. Alan Turing es reconocido como uno de los padres fundadores de la ciencia de la computación y la inteligencia artificial. Su trabajo pionero durante la Segunda Guerra Mundial en el campo de la criptografía fue fundamental para descifrar las comunicaciones enemigas, contribuyendo de manera decisiva al esfuerzo de guerra aliado. En 1936, presentó el concepto de la "máquina de Turing", un modelo teórico que formalizó las ideas de algoritmo y computabilidad, sentando las bases para la programación moderna y el diseño de computadoras digitales.</p>
+            <p>Turing también desarrolló el famoso "Test de Turing", un criterio para determinar si una máquina puede exhibir inteligencia artificial auténtica. A lo largo de su carrera, exploró profundamente los límites y posibilidades de la computación, la lógica matemática y la criptografía, dejando un legado que sigue inspirando a investigadores en todo el mundo. Su visión trascenderental sobre la intersección entre matemáticas, lógica y tecnología sigue siendo un faro para la comunidad científica y educativa.</p>
+        </section>
+
+        <!-- Books -->
+        <section class="author-books">
+            <h3 style="text-align: center; color: var(--color-primary-dark); margin-bottom: 1.5rem; font-size: 1.8rem;">Libros del autor</h3>
+            <div class="book-list">
+                <div class="book-item"><a href="../libros/">Introducción a la IA</a></div>
+                <div class="book-item"><a href="../libros/">Algoritmos Fundamentales</a></div>
+                <div class="book-item"><a href="../libros/">Criptografía Moderna</a></div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2024 Biblioteca Educativa. Todos los recursos son gratuitos.</p>
+    </footer>
+</body>
+</html>

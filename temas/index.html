@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca Educativa | Temas</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+    <style>
+        /* Per-category accent colors, all derived from the green/yellow/white palette */
+        .topic-card[data-theme="ciencias"]   { --card-accent: var(--color-primary); }
+        .topic-card[data-theme="tecnologia"] { --card-accent: var(--color-accent); }
+        .topic-card[data-theme="matematicas"] { --card-accent: var(--color-primary-dark); }
+        .topic-card[data-theme="historia"]   { --card-accent: var(--color-accent-dark); }
+        .topic-card[data-theme="arte"]       { --card-accent: var(--color-text); }
+        .topic-card[data-theme="literatura"] { --card-accent: #16a34a; }
+
+        .topic-card {
+            border-top: 4px solid var(--card-accent);
+        }
+
+        .topic-icon {
+            width: 72px;
+            height: 72px;
+            margin: 0 auto 1rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+            background: linear-gradient(135deg, var(--color-bg-light), var(--color-bg));
+            border: 2px solid var(--color-border);
+        }
+
+        .topic-card:hover .topic-icon {
+            border-color: var(--card-accent);
+            transform: scale(1.1);
+        }
+
+        .topic-card h4 {
+            color: var(--color-primary-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .topic-card .badge {
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>📚 Biblioteca Educativa</h1>
+        <nav>
+            <a href="../index.html">Inicio</a>
+            <a href="../libros/">📚 Libros</a>
+            <a href="index.html">📂 Temas</a>
+            <a href="../autores/">👨‍🏫 Autores</a>
+            <a href="../blog/">📰 Blog</a>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero -->
+        <section class="hero">
+            <h2>Temas y Categorías</h2>
+            <p>Explora nuestra colección por área de conocimiento — <span class="highlight">Gratis y sin anuncios</span></p>
+        </section>
+
+        <!-- Search -->
+        <section>
+            <div class="search-bar">
+                <input type="text" id="search" placeholder="Buscar libros, temas, autores..." onkeyup="search()">
+                <button type="button" class="btn" onclick="search()">Buscar</button>
+            </div>
+        </section>
+
+        <!-- Topic cards -->
+        <section class="categories">
+            <h3>Categorías</h3>
+            <div class="topics-grid">
+                <div class="topic-card" data-theme="ciencias">
+                    <div class="topic-icon">🔬</div>
+                    <h4>Ciencias</h4>
+                    <p>Física, química, biología y ciencias naturales. Experimentos y teorías para curiosos de aula y beyond.</p>
+                    <span class="badge">65 recursos</span>
+                </div>
+                <div class="topic-card" data-theme="tecnologia">
+                    <div class="topic-icon">💻</div>
+                    <h4>Tecnología</h4>
+                    <p>Programación, inteligencia artificial, desarrollo web y herramientas digitales de vanguardia.</p>
+                    <span class="badge">42 recursos</span>
+                </div>
+                <div class="topic-card" data-theme="matematicas">
+                    <div class="topic-icon">📐</div>
+                    <h4>Matemáticas</h4>
+                    <p>Desde aritmética básica hasta cálculo, álgebra y estadística. Aprende a tu propio ritmo.</p>
+                    <span class="badge">51 recursos</span>
+                </div>
+                <div class="topic-card" data-theme="historia">
+                    <div class="topic-icon">🏛️</div>
+                    <h4>Historia</h4>
+                    <p>Crónicas, documentales y ensayos que recorren la historia de la humanidad.</p>
+                    <span class="badge">38 recursos</span>
+                </div>
+                <div class="topic-card" data-theme="arte">
+                    <div class="topic-icon">🎨</div>
+                    <h4>Arte</h4>
+                    <p>Diseño, expresión visual, arte y creatividad para desarrollar tu mirada estética.</p>
+                    <span class="badge">29 recursos</span>
+                </div>
+                <div class="topic-card" data-theme="literatura">
+                    <div class="topic-icon">📖</div>
+                    <h4>Literatura</h4>
+                    <p>Novelas, poesía, teatro y ensayos de autores clásicos y contemporáneos.</p>
+                    <span class="badge">73 recursos</span>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2024 Biblioteca Educativa. Todos los recursos son gratuitos.</p>
+    </footer>
+
+    <script>
+    function search() {
+        const term = document.getElementById('search').value.toLowerCase();
+        if (term) {
+            window.location.href = `../libros/?search=${encodeURIComponent(term)}`;
+        }
+    }
+    </script>
+</body>
+</html>

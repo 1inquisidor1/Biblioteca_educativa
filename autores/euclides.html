@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca Educativa | Prof. Euclides</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+    <style>
+        /* ===== Author profile-specific styles ===== */
+        .author-profile {
+            background: linear-gradient(135deg, var(--color-bg-light), var(--color-bg));
+            border-bottom: 3px solid var(--color-accent);
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .author-avatar-xl {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+            color: var(--color-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: bold;
+            margin: 0 auto 1rem;
+            box-shadow: 0 8px 20px var(--color-shadow);
+            border: 4px solid var(--color-accent);
+        }
+
+        .author-profile .author-name {
+            font-size: 2.2rem;
+            color: var(--color-primary-dark);
+            margin-bottom: 0.3rem;
+        }
+
+        .author-profile .author-specialty {
+            color: var(--color-text-secondary);
+            font-size: 1.1rem;
+            font-style: italic;
+            margin-bottom: 1.5rem;
+        }
+
+        .author-bio {
+            max-width: 720px;
+            margin: 0 auto 2rem;
+            color: var(--color-text-secondary);
+            font-size: 1.05rem;
+            line-height: 1.7;
+        }
+
+        .author-bio p {
+            margin-bottom: 1rem;
+        }
+
+        .badge-amber {
+            background-color: var(--color-accent);
+            color: var(--color-text);
+        }
+
+        /* Books list */
+        .author-books-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 1.5rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .book-item {
+            background: var(--color-bg);
+            border: 2px solid var(--color-border);
+            border-top: 4px solid var(--color-primary);
+            border-radius: var(--border-radius);
+            padding: 1.25rem;
+            text-align: center;
+            box-shadow: 0 2px 8px var(--color-shadow);
+            transition: var(--transition);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .book-item:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 22px var(--color-shadow);
+            border-top-color: var(--color-accent);
+        }
+
+        .book-item .book-icon {
+            font-size: 2.2rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .book-item .book-title {
+            color: var(--color-primary-dark);
+            font-size: 1.05rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .book-item .book-badge {
+            margin-top: auto;
+        }
+
+        .section-title {
+            text-align: center;
+            color: var(--color-primary-dark);
+            margin-bottom: 2rem;
+            font-size: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .author-profile { padding: 2.5rem 1rem; }
+            .author-profile .author-name { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>📚 Biblioteca Educativa</h1>
+        <nav>
+            <a href="../index.html">Inicio</a>
+            <a href="../libros/">📚 Libros</a>
+            <a href="../temas/">📂 Temas</a>
+            <a href="index.html">👨‍🏫 Autores</a>
+            <a href="../blog/">📰 Blog</a>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Author profile hero -->
+        <section class="author-profile">
+            <div class="author-avatar-xl">EP</div>
+            <h2 class="author-name">Prof. Euclides</h2>
+            <p class="author-specialty">Matemáticas y Geometría</p>
+            <span class="badge badge-amber">3 libros publicados</span>
+
+            <!-- Placeholder bio -->
+            <div class="author-bio">
+                <p>📚 <strong>Biografía</strong></p>
+                <p>El Prof. Euclides es reconocido como uno de los pioneros de la geometría y el razonamiento matemático sistemático. Su legado académico se centra en la enseñanza clara y rigurosa de los fundamentos de las matemáticas, con un enfoque que ha influido a generaciones de estudiantes y docentes.</p>
+                <p>Esta biografía es un marcador de posición. Pronto encontrarás aquí información detallada sobre su vida, su metodología pedagógica y el impacto de su obra en la educación.</p>
+            </div>
+        </section>
+
+        <!-- Published books -->
+        <section>
+            <h3 class="section-title">Libros publicados</h3>
+            <div class="author-books-list">
+                <article class="book-item">
+                    <div class="book-icon">📘</div>
+                    <div class="book-title">Elementos de Geometría</div>
+                    <span class="badge book-badge">Matemáticas</span>
+                </article>
+                <article class="book-item">
+                    <div class="book-icon">📗</div>
+                    <div class="book-title">Álgebra Avanzada</div>
+                    <span class="badge book-badge">Matemáticas</span>
+                </article>
+                <article class="book-item">
+                    <div class="book-icon">📙</div>
+                    <div class="book-title">Lógica y Razonamiento</div>
+                    <span class="badge book-badge">Matemáticas</span>
+                </article>
+            </div>
+        </section>
+
+        <!-- Back link -->
+        <section style="text-align: center;">
+            <a href="index.html" class="btn btn-outline">← Volver a Autores</a>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2024 Biblioteca Educativa. Todos los recursos son gratuitos.</p>
+    </footer>
+</body>
+</html>

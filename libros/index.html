@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca Educativa | Libros</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+    <style>
+        /* Page-specific overrides — stay within the green/yellow/white palette */
+        .search-bar input {
+            border-color: var(--color-primary);
+            background-color: var(--color-bg);
+        }
+
+        .search-bar input:focus {
+            border-color: var(--color-primary-dark);
+            box-shadow: 0 0 0 2px var(--color-shadow);
+        }
+
+        /* Category filter buttons: green base, yellow on hover */
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .filter-btn {
+            display: inline-block;
+            padding: 0.6rem 1.2rem;
+            background-color: var(--color-primary);   /* #22c55e */
+            color: var(--color-bg);                   /* #ffffff */
+            border: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background-color: var(--color-accent);    /* #eab308 */
+            color: var(--color-text);
+        }
+
+        .filter-btn.all:hover {
+            background-color: var(--color-primary-dark);
+        }
+
+        /* Book grid: 1 column mobile, 3 columns desktop */
+        .book-grid {
+            grid-template-columns: 1fr;
+        }
+
+        @media (min-width: 768px) {
+            .book-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        /* PDF thumbnail */
+        .book-thumb {
+            height: 140px;
+            background: var(--color-bg-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        /* Green-dark titles (#16a34a) */
+        .book-info h4 {
+            color: var(--color-primary-dark);
+        }
+
+        /* Yellow badge background (#eab308) inherited from .badge in main.css */
+        .book-info .badge {
+            background-color: var(--color-accent);
+            color: var(--color-text);
+        }
+
+        .book-info .author {
+            color: var(--color-text-secondary);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>📚 Biblioteca Educativa</h1>
+        <nav>
+            <a href="../index.html">Inicio</a>
+            <a href="index.html">📚 Libros</a>
+            <a href="../temas/">📂 Temas</a>
+            <a href="../autores/">👨‍🏫 Autores</a>
+            <a href="../blog/">📰 Blog</a>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero -->
+        <section class="hero">
+            <h2>Catálogo de Libros</h2>
+            <p>Más de 200 libros gratuitos — <span class="highlight">PDF listos para descargar</span></p>
+        </section>
+
+        <!-- Search -->
+        <section>
+            <div class="search-bar">
+                <input type="text" id="search" placeholder="Buscar libros, temas, autores..." onkeyup="search()">
+                <button type="button" class="btn" onclick="search()">Buscar</button>
+            </div>
+        </section>
+
+        <!-- Category filters -->
+        <section style="max-width: 1200px; margin: 0 auto;">
+            <div class="filters">
+                <button type="button" class="filter-btn all" onclick="filterBooks('all')">Todos</button>
+                <button type="button" class="filter-btn" onclick="filterBooks('ciencias')">Ciencias</button>
+                <button type="button" class="filter-btn" onclick="filterBooks('tecnologia')">Tecnología</button>
+                <button type="button" class="filter-btn" onclick="filterBooks('matematicas')">Matemáticas</button>
+                <button type="button" class="filter-btn" onclick="filterBooks('historia')">Historia</button>
+                <button type="button" class="filter-btn" onclick="filterBooks('arte')">Arte</button>
+                <button type="button" class="filter-btn" onclick="filterBooks('literatura')">Literatura</button>
+            </div>
+
+            <!-- Book grid -->
+            <div class="book-grid">
+                <!-- Libro real: Ciencias Naturales 8 -->
+                <div class="book-card" data-category="ciencias">
+                    <a href="pdfs/ciencias-naturales-8.pdf" target="_blank" class="book-link">
+                        <div class="book-thumb">
+                            <img src="thumbnails/ciencias-naturales-8_thumb-001.png" alt="Miniatura Ciencias Naturales" loading="lazy">
+                        </div>
+                        <div class="book-info">
+                            <h4>Ciencias Naturales 8.º Grado</h4>
+                            <div class="author">Ministerio de Educación</div>
+                            <span class="badge">Ciencias</span>
+                            <span class="badge">8º Grado</span>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Libro real: Estudios Sociales 8 -->
+                <div class="book-card" data-category="historia">
+                    <a href="pdfs/estudios-sociales-8.pdf" target="_blank" class="book-link">
+                        <div class="book-thumb">
+                            <img src="thumbnails/estudios-sociales-8_thumb-001.png" alt="Miniatura Estudios Sociales" loading="lazy">
+                        </div>
+                        <div class="book-info">
+                            <h4>Estudios Sociales 8.º Grado</h4>
+                            <div class="author">Ministerio de Educación</div>
+                            <span class="badge">Historia</span>
+                            <span class="badge">8º Grado</span>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Libro real: Matemática 8 -->
+                <div class="book-card" data-category="matematicas">
+                    <a href="pdfs/matematica-8.pdf" target="_blank" class="book-link">
+                        <div class="book-thumb">
+                            <img src="thumbnails/matematica-8_thumb-001.png" alt="Miniatura Matemática" loading="lazy">
+                        </div>
+                        <div class="book-info">
+                            <h4>Matemática 8.º Grado</h4>
+                            <div class="author">Ministerio de Educación</div>
+                            <span class="badge">Matemáticas</span>
+                            <span class="badge">8º Grado</span>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Libro real: Lengua y Literatura 8 -->
+                <div class="book-card" data-category="literatura">
+                    <a href="pdfs/lengua-literatura-8.pdf" target="_blank" class="book-link">
+                        <div class="book-thumb">
+                            <img src="thumbnails/lengua-literatura-8_thumb-001.png" alt="Miniatura Lengua y Literatura" loading="lazy">
+                        </div>
+                        <div class="book-info">
+                            <h4>Lengua y Literatura 8.º Grado</h4>
+                            <div class="author">Ministerio de Educación</div>
+                            <span class="badge">Literatura</span>
+                            <span class="badge">8º Grado</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2024 Biblioteca Educativa. Todos los recursos son gratuitos.</p>
+    </footer>
+
+    <script>
+    function search() {
+        const term = document.getElementById('search').value.toLowerCase();
+        if (term) {
+            window.location.href = `?search=${encodeURIComponent(term)}`;
+        }
+    }
+
+    function filterBooks(category) {
+        const cards = document.querySelectorAll('.book-card');
+        const buttons = document.querySelectorAll('.filter-btn');
+        buttons.forEach(btn => btn.classList.remove('active'));
+
+        // Mark the clicked button as active
+        const clickedBtn = event ? event.target : null;
+        if (clickedBtn) clickedBtn.classList.add('active');
+        else if (category === 'all') document.querySelector('.filter-btn.all').classList.add('active');
+
+        cards.forEach(card => {
+            const matches = category === 'all' || card.dataset.category === category;
+            card.style.display = matches ? '' : 'none';
+        });
+    }
+
+    // Default filter
+    document.querySelector('.filter-btn.all').classList.add('active');
+    </script>
+</body>
+</html>

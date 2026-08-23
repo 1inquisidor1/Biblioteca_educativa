@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca Educativa | Dra. María Caldas</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+    <style>
+        /* ===== Author profile-specific styles ===== */
+        .author-hero {
+            background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+            color: var(--color-bg);
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+        /* Avatar circle: white bg with green text + shadow */
+        .author-hero .author-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background-color: var(--color-bg);
+            color: var(--color-primary-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+        }
+        .author-hero h2 {
+            font-size: 2.2rem;
+            margin-bottom: 0.25rem;
+        }
+        .author-hero .author-specialty {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            font-style: italic;
+        }
+        .author-bio {
+            background: var(--color-bg-light);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--color-border);
+            margin: 1.5rem auto;
+            max-width: 800px;
+        }
+        .author-bio h3 {
+            color: var(--color-primary-dark);
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+        }
+        /* Amber stat numbers */
+        .stats {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin: 1.5rem 0;
+            flex-wrap: wrap;
+        }
+        .stat {
+            text-align: center;
+        }
+        .stat .number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--color-accent);
+        }
+        .stat .label {
+            font-size: 0.85rem;
+            color: var(--color-text-secondary);
+        }
+        @media (max-width: 768px) {
+            .author-hero h2 { font-size: 1.8rem; }
+            header nav { flex-direction: column; gap: 0.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>📚 Biblioteca Educativa</h1>
+        <nav>
+            <a href="../index.html">Inicio</a>
+            <a href="../libros/">📚 Libros</a>
+            <a href="../temas/">📂 Temas</a>
+            <a href="index.html">👨‍🏫 Autores</a>
+            <a href="../blog/">📰 Blog</a>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero -->
+        <section class="author-hero">
+            <div class="author-avatar">MC</div>
+            <h2>Dra. María Caldas</h2>
+            <p class="author-specialty">Historia Universal y Estudios Culturales</p>
+        </section>
+
+        <!-- Stats -->
+        <section style="text-align: center; padding: 1.5rem 2rem 0;">
+            <div class="stats">
+                <div class="stat">
+                    <div class="number">6</div>
+                    <div class="label">Libros publicados</div>
+                </div>
+                <div class="stat">
+                    <div class="number">🏛️</div>
+                    <div class="label">Historia &amp; Cultura</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bio (placeholder) -->
+        <section style="padding: 0 2rem;">
+            <div class="author-bio">
+                <h3>Biografía</h3>
+                <p><strong>Nota:</strong> Esta biografía es un marcador de posición. La información detallada de la Dra. María Caldas será completada próximamente.</p>
+                <p style="margin-top: 1rem;">La Dra. María Caldas es investigadora en Historia Universal y Estudios Culturales. Su trabajo se centra en la interconexión entre las civilizaciones antiguas y los patrones culturales que han moldeado al mundo moderno, con un enfoque accesible y comprometido con la educación pública.</p>
+            </div>
+        </section>
+
+        <!-- Books -->
+        <section>
+            <h3 style="text-align: center; color: var(--color-primary-dark); margin-bottom: 2rem;">Obras de la Dra. María Caldas</h3>
+            <div class="book-grid">
+                <div class="book-card">
+                    <div style="background: var(--color-bg-light); height: 150px; display:flex; align-items:center; justify-content:center; font-size: 2rem;">📖</div>
+                    <div class="book-info">
+                        <h4>Historia Universal para Todos</h4>
+                        <div class="author">Dra. María Caldas</div>
+                        <span class="badge">Historia</span>
+                    </div>
+                </div>
+                <div class="book-card">
+                    <div style="background: var(--color-bg-light); height: 150px; display:flex; align-items:center; justify-content:center; font-size: 2rem;">🏛️</div>
+                    <div class="book-info">
+                        <h4>Civilizaciones Antiguas</h4>
+                        <div class="author">Dra. María Caldas</div>
+                        <span class="badge">Historia</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2024 Biblioteca Educativa. Todos los recursos son gratuitos.</p>
+    </footer>
+</body>
+</html>

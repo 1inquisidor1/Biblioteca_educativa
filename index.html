@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca Educativa | Inicio</title>
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+</head>
+<body>
+    <header>
+        <h1>📚 Biblioteca Educativa</h1>
+        <nav>
+            <a href="index.html">Inicio</a>
+            <a href="libros/">📚 Libros</a>
+            <a href="temas/">📂 Temas</a>
+            <a href="autores/">👨‍🏫 Autores</a>
+            <a href="blog/">📰 Blog</a>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero -->
+        <section class="hero">
+            <h2>Bienvenido a la Biblioteca Educativa</h2>
+            <p>Recursos gratuitos para tu aprendizaje — <span class="highlight">Sin costo, sin anuncios</span></p>
+        </section>
+
+        <!-- Search -->
+        <section>
+            <div class="search-bar">
+                <input type="text" id="search" placeholder="Buscar libros, temas, autores..." onkeyup="search()">
+                <button type="button" class="btn" onclick="search()">Buscar</button>
+            </div>
+        </section>
+
+        <!-- Categories -->
+        <section class="categories">
+            <h3>Categorías</h3>
+            <div class="topics-grid">
+                <div class="topic-card" style="cursor: pointer;">
+                    <h4>📖 Ciencias</h4>
+                    <p>Libros de física, química y biología</p>
+                </div>
+                <div class="topic-card" style="cursor: pointer;">
+                    <h4>💻 Tecnología</h4>
+                    <p>Programación, IA y desarrollo</p>
+                </div>
+                <div class="topic-card" style="cursor: pointer;">
+                    <h4>📐 Matemáticas</h4>
+                    <p>Desde básicos hasta avanzados</p>
+                </div>
+                <div class="topic-card" style="cursor: pointer;">
+                    <h4>🏛️ Historia</h4>
+                    <p>Libros históricos y documentales</p>
+                </div>
+                <div class="topic-card" style="cursor: pointer;">
+                    <h4>🎨 Arte</h4>
+                    <p>Diseño, arte y creatividad</p>
+                </div>
+                <div class="topic-card" style="cursor: pointer;">
+                    <h4>📖 Literatura</h4>
+                    <p>Novelas, poesía y ensayos</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Latest Books -->
+        <section>
+            <h3 style="text-align:center; color: var(--color-primary-dark); margin-bottom: 2rem;">Libros Destacados</h3>
+            <div class="book-grid">
+                <div class="book-card">
+                    <div style="background: var(--color-bg-light); height: 150px; display:flex; align-items:center; justify-content:center; font-size: 2rem;">📘</div>
+                    <div class="book-info">
+                        <h4>Introducción a la IA</h4>
+                        <div class="author">Dr. Alan Turing</div>
+                        <span class="badge">Tecnología</span>
+                    </div>
+                </div>
+                <div class="book-card">
+                    <div style="background: var(--color-bg-light); height: 150px; display:flex; align-items:center; justify-content:center; font-size: 2rem;">📗</div>
+                    <div class="book-info">
+                        <h4>Física Cuántica</h4>
+                        <div class="author">Prof. Stephen Hawking</div>
+                        <span class="badge">Ciencias</span>
+                    </div>
+                </div>
+                <div class="book-card">
+                    <div style="background: var(--color-bg-light); height: 150px; display:flex; align-items:center; justify-content:center; font-size: 2rem;">📕</div>
+                    <div class="book-info">
+                        <h4>Álgebra Avanzada</h4>
+                        <div class="author">Prof. Euclid</div>
+                        <span class="badge">Matemáticas</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2024 Biblioteca Educativa. Todos los recursos son gratuitos.</p>
+    </footer>
+
+    <script>
+    function search() {
+        const term = document.getElementById('search').value.toLowerCase();
+        if (term) {
+            window.location.href = `libros/?search=${encodeURIComponent(term)}`;
+        }
+    }
+    </script>
+</body>
+</html>

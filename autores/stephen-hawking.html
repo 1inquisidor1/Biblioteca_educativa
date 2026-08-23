@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca Educativa | Prof. Stephen Hawking</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+    <style>
+        /* ===== Author profile: inherits green/amber/white palette from main.css ===== */
+
+        /* Hero */
+        .author-hero {
+            background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+            color: var(--color-bg);
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+        .author-hero h2 { font-size: 2.5rem; margin-bottom: 0.3rem; }
+        .author-hero p { font-size: 1.1rem; opacity: 0.9; }
+
+        /* Avatar circle (green #22c55e with initials) */
+        .author-avatar-large {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background-color: var(--color-primary);
+            color: var(--color-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: bold;
+            margin: 0 auto 1rem;
+            box-shadow: 0 6px 14px var(--color-shadow);
+        }
+
+        /* Profile card: bio + metadata */
+        .author-profile {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            gap: 2.5rem;
+            align-items: flex-start;
+        }
+        .author-meta {
+            flex: 0 0 220px;
+            text-align: center;
+        }
+        .author-meta .avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background-color: var(--color-primary);
+            color: var(--color-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.5rem;
+            font-weight: bold;
+            margin: 0 auto 1rem;
+            box-shadow: 0 6px 14px var(--color-shadow);
+        }
+        .author-meta h3 { color: var(--color-primary-dark); font-size: 1.3rem; margin-bottom: 0.5rem; }
+        .author-meta .specialty { color: var(--color-text-secondary); font-style: italic; font-size: 0.95rem; margin-bottom: 1rem; }
+        .author-meta .badge { background-color: var(--color-accent); color: var(--color-text); font-size: 0.8rem; }
+        .author-meta .detail-list { list-style: none; text-align: left; font-size: 0.9rem; }
+        .author-meta .detail-list li { margin: 0.4rem 0; }
+        .author-meta .detail-list .label { color: var(--color-text-secondary); }
+
+        /* Bio */
+        .author-bio {
+            flex: 1;
+            background: var(--color-bg);
+            border: 2px solid var(--color-border);
+            border-radius: var(--border-radius);
+            padding: 1.75rem;
+            box-shadow: 0 2px 8px var(--color-shadow);
+        }
+        .author-bio h3 { color: var(--color-primary-dark); margin-bottom: 1rem; font-size: 1.4rem; }
+        .author-bio p { margin-bottom: 1rem; }
+        .placeholder-bio {
+            color: var(--color-text-secondary);
+            font-style: italic;
+            border-left: 3px solid var(--color-accent);
+            padding-left: 1rem;
+        }
+
+        /* Books grid */
+        .author-books-section h3 { color: var(--color-primary-dark); margin-bottom: 1.5rem; }
+        .author-book-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 1.5rem;
+        }
+        .author-book-card {
+            background: var(--color-bg);
+            border: 2px solid var(--color-border);
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 2px 8px var(--color-shadow);
+            transition: var(--transition);
+        }
+        .author-book-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px var(--color-shadow);
+            border-color: var(--color-accent);
+        }
+        .author-book-card .book-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.75rem;
+        }
+        .author-book-card h4 { color: var(--color-primary-dark); font-size: 1rem; margin-bottom: 0.5rem; }
+        .author-book-card .badge { background-color: var(--color-accent); color: var(--color-text); }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .author-hero h2 { font-size: 1.9rem; }
+            .author-profile { flex-direction: column; gap: 1.5rem; }
+            .author-meta { flex: 0 0 auto; }
+            .author-meta .avatar { width: 120px; height: 120px; font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>📚 Biblioteca Educativa</h1>
+        <nav>
+            <a href="../index.html">Inicio</a>
+            <a href="../libros/">📚 Libros</a>
+            <a href="../temas/">📂 Temas</a>
+            <a href="index.html">👨‍🏫 Autores</a>
+            <a href="../blog/">📰 Blog</a>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero -->
+        <section class="author-hero">
+            <div class="author-avatar-large">SH</div>
+            <h2>Prof. Stephen Hawking</h2>
+            <p>Física Teórica y Cosmología</p>
+        </section>
+
+        <!-- Profile + Bio -->
+        <section>
+            <div class="author-profile" style="max-width: 1000px; margin: 0 auto;">
+                <!-- Metadata -->
+                <aside class="author-meta">
+                    <div class="avatar">SH</div>
+                    <h3>Prof. Stephen Hawking</h3>
+                    <p class="specialty">Física Teórica y Cosmología</p>
+                    <span class="badge">4 libros publicados</span>
+                    <ul class="detail-list" style="margin-top: 1rem;">
+                        <li><span class="label">Especialidad:</span> Física Teórica y Cosmología</li>
+                        <li><span class="label">Lengua:</span> Español</li>
+                        <li><span class="label">Recursos:</span> Gratuitos, sin anuncios</li>
+                    </ul>
+                </aside>
+
+                <!-- Bio -->
+                <div class="author-bio">
+                    <h3>Biografía</h3>
+                    <p class="placeholder-bio">Esta es una biografía de ejemplo (placeholder). El objetivo de esta sección es presentar brevemente la trayectoria del autor, su formación, aportaciones destacadas y el enfoque pedagógico de sus recursos. Esta biografía será reemplazada por contenido redactado y verificado en una etapa posterior.</p>
+                    <p class="placeholder-bio">Mientras tanto, puedes explorar los <strong>4 libros publicados</strong> por el Prof. Stephen Hawking disponibles en nuestra biblioteca, organizados por temática y listos para descargar en formato PDF.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Books -->
+        <section>
+            <div style="max-width: 1000px; margin: 0 auto;">
+                <h3 style="text-align: center; color: var(--color-primary-dark); margin-bottom: 2rem;">Libros de Stephen Hawking</h3>
+                <div class="author-book-grid">
+                    <article class="author-book-card">
+                        <div class="book-icon">📘</div>
+                        <h4>Física Cuántica para Principiantes</h4>
+                        <span class="badge">Ciencias</span>
+                    </article>
+                    <article class="author-book-card">
+                        <div class="book-icon">📗</div>
+                        <h4>El Gran Telar del Universo</h4>
+                        <span class="badge">Cosmología</span>
+                    </article>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2024 Biblioteca Educativa. Todos los recursos son gratuitos.</p>
+    </footer>
+</body>
+</html>

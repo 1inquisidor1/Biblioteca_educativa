@@ -1,0 +1,10 @@
+# PDFs (largos) - opcional subir
+# libros/pdfs/*.pdf
+
+# Node / tooling
+node_modules/
+*.log
+
+# Sistema
+.DS_Store
+Thumbs.db

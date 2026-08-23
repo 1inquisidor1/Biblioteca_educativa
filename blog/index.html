@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca Educativa | Blog</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+    <style>
+        /* ===== Blog-specific styles ===== */
+        .blog-hero {
+            background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+            color: var(--color-bg);
+            padding: 4rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .blog-hero::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(var(--color-bg) 2px, transparent 2px);
+            background-size: 24px 24px;
+            opacity: 0.1;
+        }
+
+        .blog-hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+        }
+
+        .blog-hero p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 640px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        /* Post grid */
+        .post-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.75rem;
+        }
+
+        /* Single post card */
+        .post-card {
+            background: var(--color-bg);
+            border: 1px solid var(--color-border);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: 0 2px 8px var(--color-shadow);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .post-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 20px var(--color-shadow);
+            border-color: transparent;
+        }
+
+        /* Accent bar at top of card — alternates green / yellow */
+        .post-card.__green   { border-top: 5px solid var(--color-primary); }
+        .post-card.__yellow  { border-top: 5px solid var(--color-accent); }
+
+        .post-card:hover.__green  { border-top-color: var(--color-accent); }
+        .post-card:hover.__yellow { border-top-color: var(--color-primary); }
+
+        .post-header {
+            padding: 1.25rem 1.25rem 0.5rem;
+        }
+
+        .post-meta {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.6rem;
+            font-size: 0.8rem;
+            color: var(--color-text-secondary);
+        }
+
+        .post-meta .dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--color-accent);
+            flex-shrink: 0;
+        }
+
+        .post-card .badge {
+            font-size: 0.7rem;
+            padding: 0.2rem 0.6rem;
+        }
+
+        .post-title {
+            font-size: 1.3rem;
+            color: var(--color-primary-dark);
+            margin-bottom: 0.6rem;
+            line-height: 1.3;
+        }
+
+        .post-title a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .post-title a:hover {
+            color: var(--color-primary);
+        }
+
+        .post-body {
+            padding: 0 1.25rem 1rem;
+            flex-grow: 1;
+        }
+
+        .post-excerpt {
+            color: var(--color-text-secondary);
+            font-size: 0.92rem;
+            line-height: 1.55;
+            margin-bottom: 1.1rem;
+            flex-grow: 1;
+        }
+
+        .post-footer {
+            padding: 0 1.25rem 1.25rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .read-more {
+            font-size: 0.85rem;
+        }
+
+        /* Featured ribbon */
+        .ribbon {
+            position: absolute;
+            top: 0.9rem;
+            right: -1.75rem;
+            background: var(--color-accent);
+            color: var(--color-text);
+            padding: 0.3rem 3rem;
+            font-size: 0.7rem;
+            font-weight: bold;
+            transform: rotate(45deg);
+            z-index: 1;
+        }
+
+        .post-card.featured {
+            position: relative;
+        }
+
+        /* Empty state */
+        .no-posts {
+            text-align: center;
+            padding: 3rem;
+            grid-column: 1 / -1;
+            color: var(--color-text-secondary);
+        }
+
+        /* Responsive tweaks */
+        @media (max-width: 768px) {
+            .blog-hero h2 { font-size: 1.9rem; }
+            .post-grid { grid-template-columns: 1fr; }
+            .post-header { padding-top: 2.2rem; }
+            .post-card.featured .post-header { padding-top: 2.2rem; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>📚 Biblioteca Educativa</h1>
+        <nav>
+            <a href="../index.html">Inicio</a>
+            <a href="../libros/">📚 Libros</a>
+            <a href="../temas/">📂 Temas</a>
+            <a href="../autores/">👨‍🏫 Autores</a>
+            <a href="index.html">📰 Blog</a>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero -->
+        <section class="blog-hero">
+            <div class="ribbon" hidden></div>
+            <h2>📰 Blog Educativo</h2>
+            <p>Artículos, guías y recursos para transformar tu forma de aprender, desde técnicas de estudio hasta tutoriales de tecnología — <span class="highlight">todo gratis</span>.</p>
+        </section>
+
+        <!-- Posts -->
+        <section>
+            <div class="post-grid">
+                <!-- POST 1 — verde -->
+                <article class="post-card __green featured">
+                    <span class="ribbon">Destacado</span>
+                    <div class="post-header">
+                        <div class="post-meta">
+                            <span class="dot"></span>
+                            <time datetime="2024-08-15">15 de agosto, 2024</time>
+                            <span class="badge" style="background: var(--color-bg-light); color: var(--color-primary-dark);">Programación</span>
+                        </div>
+                        <h3 class="post-title"><a href="como-aprender-programacion.html">Cómo aprender programación desde cero: guía paso a paso</a></h3>
+                    </div>
+                    <div class="post-body">
+                        <p class="post-excerpt">
+                            La programación está en todas partes, pero empezar puede parecer abrumador. En esta guía
+                            te explicamos cómo elegir tu primer lenguaje, qué herramientas instalar y cómo montar un
+                            plan de estudio realista sin gastar un peso.
+                        </p>
+                    </div>
+                    <div class="post-footer">
+                        <span class="read-more">5 min de lectura</span>
+                        <a href="como-aprender-programacion.html" class="btn btn-accent read-more">Leer más →</a>
+                    </div>
+                </article>
+
+                <!-- POST 2 — amarillo -->
+                <article class="post-card __yellow">
+                    <div class="post-header">
+                        <div class="post-meta">
+                            <span class="dot"></span>
+                            <time datetime="2024-07-30">30 de julio, 2024</time>
+                            <span class="badge" style="background: var(--color-bg-light); color: var(--color-primary-dark);">Estudio</span>
+                        </div>
+                        <h3 class="post-title"><a href="metodos-de-estudio.html">Los 5 métodos de estudio más efectivos según la ciencia</a></h3>
+                    </div>
+                    <div class="post-body">
+                        <p class="post-excerpt">
+                            No todos los métodos de estudio son iguales. Te compartimos las técnicas respaldadas por la
+                            psicología cognitiva — espaciado, recuperación activa y más — para recordar mejor y aprobar
+                            sin estrés.
+                        </p>
+                    </div>
+                    <div class="post-footer">
+                        <span class="read-more">4 min de lectura</span>
+                        <a href="metodos-de-estudio.html" class="btn read-more">Leer más →</a>
+                    </div>
+                </article>
+
+                <!-- POST 3 — verde -->
+                <article class="post-card __green">
+                    <div class="post-header">
+                        <div class="post-meta">
+                            <span class="dot"></span>
+                            <time datetime="2024-07-12">12 de julio, 2024</time>
+                            <span class="badge" style="background: var(--color-bg-light); color: var(--color-primary-dark);">Ciencias</span>
+                        </div>
+                        <h3 class="post-title"><a href="fisica-cuantica-para-principiantes.html">Física cuántica para principiantes: conceptos sin matemáticas complejas</a></h3>
+                    </div>
+                    <div class="post-body">
+                        <p class="post-excerpt">
+                            ¿Te has preguntado qué es un agujero de gusano o qué significa el principio de incertidumbre?
+                            Te la explicamos con analogías cotidianas y sin ecuaciones complicadas.
+                        </p>
+                    </div>
+                    <div class="post-footer">
+                        <span class="read-more">7 min de lectura</span>
+                        <a href="fisica-cuantica-para-principiantes.html" class="btn btn-accent read-more">Leer más →</a>
+                    </div>
+                </article>
+
+                <!-- POST 4 — amarillo -->
+                <article class="post-card __yellow featured">
+                    <span class="ribbon">Nuevo</span>
+                    <div class="post-header">
+                        <div class="post-meta">
+                            <span class="dot"></span>
+                            <time datetime="2024-09-02">2 de septiembre, 2024</time>
+                            <span class="badge" style="background: var(--color-bg-light); color: var(--color-primary-dark);">Herramientas</span>
+                        </div>
+                        <h3 class="post-title"><a href="herramientas-gratuitas-pdfs.html">10 herramientas gratuitas para trabajar con PDFs sin instalar nada</a></h3>
+                    </div>
+                    <div class="post-body">
+                        <p class="post-excerpt">
+                            Dividir, unir, firmar y comprimir documentos nunca fue tan fácil. Con estas apps online sin
+                            publicidad y 100 % gratuitas puedes gestionar tus PDFs desde cualquier navegador.
+                        </p>
+                    </div>
+                    <div class="post-footer">
+                        <span class="read-more">6 min de lectura</span>
+                        <a href="herramientas-gratuitas-pdfs.html" class="btn read-more">Leer más →</a>
+                    </div>
+                </article>
+
+                <!-- POST 5 — verde -->
+                <article class="post-card __green">
+                    <div class="post-header">
+                        <div class="post-meta">
+                            <span class="dot"></span>
+                            <time datetime="2024-06-21">21 de junio, 2024</time>
+                            <span class="badge" style="background: var(--color-bg-light); color: var(--color-primary-dark);">Matemáticas</span>
+                        </div>
+                        <h3 class="post-title"><a href="aprender-matematicas-con-juegos.html">Aprende matemáticas jugando: los mejores juegos para niños y adultos</a></h3>
+                    </div>
+                    <div class="post-body">
+                        <p class="post-excerpt">
+                            Convertir las matemáticas en diversión es posible. Repartimos los juegos digitales y de
+                            mesa que refuerzan aritmética, álgebra y lógica de forma lúdica y sin frustraciones.
+                        </p>
+                    </div>
+                    <div class="post-footer">
+                        <span class="read-more">5 min de lectura</span>
+                        <a href="aprender-matematicas-con-juegos.html" class="btn btn-accent read-more">Leer más →</a>
+                    </div>
+                </article>
+
+                <!-- POST 6 — amarillo -->
+                <article class="post-card __yellow">
+                    <div class="post-header">
+                        <div class="post-meta">
+                            <span class="dot"></span>
+                            <time datetime="2024-05-08">8 de mayo, 2024</time>
+                            <span class="badge" style="background: var(--color-bg-light); color: var(--color-primary-dark);">Historia</span>
+                        </div>
+                        <h3 class="post-title"><a href="lecturas-esenciales-historia.html">Lecturas esenciales de historia universal que debes conocer</a></h3>
+                    </div>
+                    <div class="post-body">
+                        <p class="post-excerpt">
+                            Un buen libro de historia abre ojos a otros tiempos. Te indicamos los textos clave — desde
+                            historias antiguas hasta análisis modernos — para entender el mundo de hoy.
+                        </p>
+                    </div>
+                    <div class="post-footer">
+                        <span class="read-more">4 min de lectura</span>
+                        <a href="lecturas-esenciales-historia.html" class="btn read-more">Leer más →</a>
+                    </div>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2024 Biblioteca Educativa. Todos los recursos son gratuitos.</p>
+    </footer>
+
+    <script>
+        // Oculta la posible cinta del hero (solo se usa dentro de tarjetas .featured)
+        const heroRibbon = document.querySelector('.blog-hero .ribbon');
+        if (heroRibbon) heroRibbon.hidden = true;
+    </script>
+</body>
+</html>
