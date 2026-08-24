@@ -250,14 +250,26 @@
             errorEl.style.display = 'none';
 
             try {
-                // Load PDF.js v4 (await import — fixes namespace issues)
-                console.log('Loading PDF.js module...');
-                const { getDocument, GlobalWorkerOptions } = await import('https://esm.sh/pdfjs-dist@4.2.67/build/pdf.mjs');
-                console.log('PDF.js module loaded:', typeof getDocument, typeof GlobalWorkerOptions);
+                // Load PDF.js v4 ES module (all exports live under .default in esm.sh wrapper)
+                console.log('Loading PDF.js v4 module...');
+                const pdfjsModule = await import('https://esm.sh/pdfjs-dist@4.2.67/build/pdf.mjs');
+                console.log('Module loaded:', Object.keys(pdfjsModule || {}));
 
-                // Fake worker (inline) — avoids CORS/cdn worker issues
-                GlobalWorkerOptions.workerSrc = null;
-                console.log('Worker source disabled (fake worker)');
+                // Access via .default — esm.sh wraps all named exports here
+                const pdfjs = pdfjsModule.default || pdfjsModule;
+                console.log('pdfjs object keys:', Object.keys(pdfjs).slice(0, 8));
+
+                if (!pdfjs || typeof pdfjs.getDocument !== 'function') {
+                    throw new Error('PDF.js no loaded correctly — getDocument is not a function. module keys: ' + Object.keys(pdfjsModule || {}).join(','));
+                }
+
+                // Set worker src from CORS CDN (esm.sh returns access-control-allow-origin: *)
+                console.log('Setting worker source...');
+                pdfjs.GlobalWorkerOptions.workerSrc = 'https://esm.sh/pdfjs-dist@4.2.67/build/pdf.worker.mjs';
+
+                // Destructure exports
+                const { getDocument } = pdfjs;
+                console.log('getDocument type:', typeof getDocument);
 
                 // Fix CORS: GitHub raw URLs → relative paths (same-origin)
                 let fetchUrl = pdfUrl;
