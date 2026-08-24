@@ -363,16 +363,15 @@
                 // Set worker from CORS-enabled CDN
                 pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://esm.sh/pdfjs-dist@3.4.120/build/pdf.worker.mjs';
 
-                // Fetch PDF using relative path if same-repo, else use raw URL
-                // GitHub Pages serves relative paths same-origin (no CORS needed)
-                let fetchUrl = pdfUrl;
-                if (pdfUrl.includes('raw.githubusercontent.com') && pdfUrl.includes('libros/pdfs/')) {
-                    // Convert to relative path for same-origin (bypasses CORS)
-                    const parts = pdfUrl.split('libros/pdfs/');
-                    if (parts.length > 1) {
-                        fetchUrl = '../pdfs/' + parts[1].split('?')[0];
-                    }
-                }
+                // Fix path resolution: viewer.html is in libros/, PDFs in libros/pdfs/
+// Relative path should be 'pdfs/FILENAME' (no ../) to resolve correctly
+let fetchUrl = pdfUrl;
+if (pdfUrl.includes('raw.githubusercontent.com') && pdfUrl.includes('libros/pdfs/')) {
+    const parts = pdfUrl.split('libros/pdfs/');
+    if (parts.length > 1) {
+        fetchUrl = 'pdfs/' + parts[1].split('?')[0]; // Same-dir relative path
+    }
+}
 
                 // Fetch as Blob to force application/pdf Content-Type
                 fetch(fetchUrl).then(function(r) {
