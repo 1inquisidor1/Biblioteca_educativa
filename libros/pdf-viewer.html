@@ -357,11 +357,11 @@
 
             // Load PDF.js from CDN using dynamic import (ES module)
             import('https://esm.sh/pdfjs-dist@3.4.120/build/pdf.mjs').then(function(module) {
-                const pdfjsLib = module;
-                const pdfjs = pdfjsLib;
+                // Destructure exports for v3 module namespace pattern
+                const { GlobalWorkerOptions, getDocument } = module;
                 
                 // Set worker from CORS-enabled CDN
-                pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://esm.sh/pdfjs-dist@3.4.120/build/pdf.worker.mjs';
+                GlobalWorkerOptions.workerSrc = 'https://esm.sh/pdfjs-dist@3.4.120/build/pdf.worker.mjs';
 
                 // Fix path resolution: viewer.html is in libros/, PDFs in libros/pdfs/
 // Relative path should be 'pdfs/FILENAME' (no ../) to resolve correctly
@@ -380,7 +380,7 @@ if (pdfUrl.includes('raw.githubusercontent.com') && pdfUrl.includes('libros/pdfs
                 }).then(function(blob) {
                     const pdfBlob = new Blob([blob], { type: 'application/pdf' });
                     const blobUrl = URL.createObjectURL(pdfBlob);
-                    return pdfjsLib.getDocument(blobUrl).promise;
+                    return getDocument(blobUrl).promise;
                 }).then(function(pdf) {
                     pdfDoc = pdf;
                     currentPage = 1;
