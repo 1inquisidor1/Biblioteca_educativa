@@ -6,9 +6,9 @@
     <title>Biblioteca Educativa | Visualizador PDF</title>
     <style>
         :root {
-            --color-primary: #22c55e;
+            --color-primary: #22c55e; /* verde */
             --color-primary-dark: #16a34a;
-            --color-accent: #eab308;
+            --color-accent: #eab308; /* amarillo */
             --color-bg: #ffffff;
             --color-text: #1f2937;
             --color-text-secondary: #6b7280;
@@ -66,7 +66,7 @@
         <h1>📚 Biblioteca Educativa</h1>
         <nav>
             <a href="../index.html">🏠 Inicio</a>
-            <a href="../libros/index.html">📚 Libros</a>
+            <a href="index.html">📚 Libros</a>
             <a href="../temas/index.html">📂 Temas</a>
             <a href="../autores/index.html">👨‍🏫 Autores</a>
             <a href="../blog/index.html">📰 Blog</a>
@@ -78,7 +78,7 @@
     <div class="pdf-toolbar">
         <div class="left-controls">
             <button id="prevPage" disabled>◀ Anterior</button>
-            <span class="page-info"><span id="currentPage">1</span> / <span id="totalPages">‒</span></span>
+            <span class="page-info"><span id="currentPage">0</span> / <span id="totalPages">0</span></span>
             <button id="nextPage" disabled>Siguiente ▶</button>
             <span>| Ir a:</span>
             <input type="number" id="pageNum" min="1" value="1" style="width: 60px;">
@@ -100,7 +100,7 @@
 
     <footer>© 2024 Biblioteca Educativa | Recursos gratuitos para educación</footer>
 
-    <!-- PDF.js v4 viewer — FIXED: fake worker (inline) + await import -->
+    <!-- PDF.js viewer — MAXIMUM EFFORT PATTERN -->
     <script type="module">
         // Elementos DOM
         const canvas = document.getElementById('pdf-canvas');
@@ -123,32 +123,62 @@
         let currentPage = 1;
         let currentScale = 1.25;
 
+        // DEBUG: Log startup
+        console.log('PDF Viewer initialized');
+
         // URL del PDF desde query param
         const params = new URLSearchParams(window.location.search);
-        let pdfUrl = params.get('file') || '';
-        let pdfFilename = decodeURIComponent(pdfUrl.split('/').pop() || '').replace(/%20/g, ' ') || 'Documento.pdf';
+        let pdfUrl = params.get('file') || params.get('url') || '';
+        let pdfFilename = decodeURIComponent((pdfUrl || '').split('/').pop() || '').replace(/%20/g, ' ') || 'Documento.pdf';
         titleEl.textContent = pdfFilename.replace(/_/g, ' ');
-        totalPagesEl.textContent = '1';
+        console.log('PDF URL:', pdfUrl);
 
-        downloadBtn.onclick = function() { window.open(pdfUrl, '_blank'); };
+        // Download handler — usa el raw URL directamente
+        downloadBtn.onclick = function(e) {
+            e.preventDefault();
+            console.log('Download clicked:', pdfUrl);
+            // Force download using raw URL
+            const a = document.createElement('a');
+            a.href = pdfUrl;
+            a.download = pdfFilename || 'document.pdf';
+            a.target = '_blank';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        };
 
+        // --- Navigation handlers ---
         function updateNav() {
             currentPageEl.textContent = currentPage;
             pageNumInput.value = currentPage;
             prevBtn.disabled = currentPage <= 1;
-            nextBtn.disabled = currentPage >= (pdfDoc?.numPages || 1);
+            nextBtn.disabled = currentPage >= (pdfDoc?.numPages || 0);
             zoomLevelEl.textContent = Math.round(currentScale * 100) + '%';
         }
 
         function renderPage(pageNum) {
-            if (!pdfDoc) return;
+            if (!pdfDoc) {
+                console.error('No pdfDoc loaded');
+                return;
+            }
+            console.log('Rendering page:', pageNum);
             pdfDoc.getPage(pageNum).then(function(page) {
                 const viewport = page.getViewport({ scale: currentScale });
                 canvas.height = viewport.height;
                 canvas.width = viewport.width;
                 const renderContext = { canvasContext: ctx, viewport: viewport };
-                page.render(renderContext).promise.then(function() { updateNav(); });
-            }).catch(function(err) { showError('Error rendering page: ' + err.message); });
+                const renderTask = page.render(renderContext);
+                renderTask.promise.then(function() {
+                    console.log('Page rendered:', pageNum);
+                    updateNav();
+                }).catch(function(err) {
+                    console.error('Render error:', err);
+                    showError('Error rendering page ' + pageNum + ': ' + err.message);
+                });
+            }).catch(function(err) {
+                console.error('GetPage error:', err);
+                showError('Error loading page ' + pageNum + ': ' + err.message);
+            });
         }
 
         function showError(msg) {
@@ -157,59 +187,135 @@
             errorEl.style.display = 'block';
             errorEl.textContent = msg;
             totalPagesEl.textContent = '0';
+            currentPageEl.textContent = '0';
+            console.error('ERROR:', msg);
         }
 
-        prevBtn.onclick = function() { if (currentPage > 1 && pdfDoc) { currentPage--; renderPage(currentPage); updateNav(); } };
-        nextBtn.onclick = function() { if (currentPage < pdfDoc.numPages && pdfDocDoc) { currentPage++; renderPage(currentPage); updateNav(); } };
-        pageNumInput.onchange = function() {
-            const page = parseInt(this.value);
-            if (page >= 1 && page <= (pdfDoc?.numPages || 1)) { currentPage = page; renderPage(currentPage); updateNav(); } else { this.value = currentPage; }
+        prevBtn.onclick = function() {
+            if (currentPage > 1 && pdfDoc) {
+                currentPage--;
+                renderPage(currentPage);
+                updateNav();
+            }
         };
-        zoomOutBtn.onclick = function() { currentScale = Math.max(0.25, currentScale - 0.25); renderPage(currentPage); };
-        zoomInBtn.onclick = function() { currentScale = Math.min(3.0, currentScale + 0.25); renderPage(currentPage); updateNav(); };
-        zoomFitBtn.onclick = function() { currentScale = 1.0; renderPage(currentPage); updateNav(); };
+        nextBtn.onclick = function() {
+            if (currentPage < pdfDoc.numPages && pdfDoc) {
+                currentPage++;
+                renderPage(currentPage);
+                updateNav();
+            }
+        };
+        pageNumInput.onchange = function() {
+            const page = parseInt(this.value, 10);
+            if (page >= 1 && page <= (pdfDoc?.numPages || 1)) {
+                currentPage = page;
+                renderPage(currentPage);
+                updateNav();
+            } else {
+                this.value = currentPage;
+            }
+        };
+        zoomOutBtn.onclick = function() {
+            currentScale = Math.max(0.25, currentScale - 0.25);
+            console.log('Zoom out to', currentScale);
+            renderPage(currentPage);
+            updateNav();
+        };
+        zoomInBtn.onclick = function() {
+            currentScale = Math.min(3.0, currentScale + 0.25);
+            console.log('Zoom in to', currentScale);
+            renderPage(currentPage);
+            updateNav();
+        };
+        zoomFitBtn.onclick = function() {
+            currentScale = 1.0;
+            console.log('Zoom fit to 100%');
+            renderPage(currentPage);
+            updateNav();
+        };
 
-        // === MAIN EXECUTION ===
-        if (!pdfUrl) { showError('No se especificó ningún archivo PDF.'); return; }
-
-        loadingEl.style.display = 'block';
-
-        // Fix CORS: GitHub raw URLs → relative paths (same-origin)
-        let fetchUrl = pdfUrl;
-        if (pdfUrl.includes('raw.githubusercontent.com') && pdfUrl.includes('libros/pdfs/')) {
-            const parts = pdfUrl.split('libros/pdfs/');
-            if (parts.length > 1) { fetchUrl = 'pdfs/' + parts[1].split('?')[0]; }
-        }
-
-        // Load PDF.js v4 + render (FIXED: await import + fake worker)
+        // === MAIN ===
         (async function() {
+            console.log('=== Main async execution started ===');
+
+            if (!pdfUrl) {
+                loadingEl.style.display = 'none';
+                showError('No se especificó ningún archivo PDF. Agrega ?file=URL');
+                return;
+            }
+
+            // Show loading
+            loadingEl.style.display = 'block';
+            canvas.style.display = 'none';
+            errorEl.style.display = 'none';
+
             try {
-                // Import PDF.js v4 with await (fixes namespace issues)
+                // Load PDF.js v4 (await import — fixes namespace issues)
+                console.log('Loading PDF.js module...');
                 const { getDocument, GlobalWorkerOptions } = await import('https://esm.sh/pdfjs-dist@4.2.67/build/pdf.mjs');
-                
-                // Disable worker (use inline) — avoids CORS/cdn worker issues
+                console.log('PDF.js module loaded:', typeof getDocument, typeof GlobalWorkerOptions);
+
+                // Fake worker (inline) — avoids CORS/cdn worker issues
                 GlobalWorkerOptions.workerSrc = null;
-                
-                // Fetch PDF as Blob + application/pdf MIME
-                const response = await fetch(fetchUrl, { mode: 'cors', credentials: 'omit' });
-                if (!response.ok) throw new Error('HTTP ' + response.status);
+                console.log('Worker source disabled (fake worker)');
+
+                // Fix CORS: GitHub raw URLs → relative paths (same-origin)
+                let fetchUrl = pdfUrl;
+                if (typeof pdfUrl === 'string' &&
+                    pdfUrl.includes('raw.githubusercontent.com') &&
+                    pdfUrl.includes('/libros/pdfs/')) {
+                    const idx = pdfUrl.indexOf('/libros/pdfs/');
+                    if (idx !== -1) {
+                        const after = pdfUrl.substring(idx + '/libros/pdfs/'.length);
+                        const cleanPath = after.split('?')[0];
+                        fetchUrl = 'pdfs/' + cleanPath;
+                        console.log('Converted to relative:', fetchUrl);
+                    }
+                }
+
+                // Fetch PDF with explicit CORS mode
+                console.log('Fetching PDF from:', fetchUrl);
+                const response = await fetch(fetchUrl, {
+                    mode: 'cors',
+                    credentials: 'omit',
+                    cache: 'no-cache'
+                });
+                console.log('fetch response.ok:', response.ok, 'status:', response.status, 'type:', response.type);
+
+                if (!response.ok) {
+                    throw new Error('HTTP ' + response.status + ' - No se pudo cargar el PDF desde ' + fetchUrl);
+                }
+
+                // Convert to Blob with correct MIME
                 const blob = await response.blob();
+                console.log('Blob received, size:', blob.size, 'type:', blob.type);
+
                 const pdfBlob = new Blob([blob], { type: 'application/pdf' });
                 const blobUrl = URL.createObjectURL(pdfBlob);
-                
-                // Load PDF
+                console.log('Blob URL created:', blobUrl);
+
+                // Load PDF — THIS is the critical step
+                console.log('Calling getDocument with blobUrl...');
                 const pdf = await getDocument(blobUrl).promise;
+                console.log('PDF loaded! numPages:', pdf.numPages);
+
                 pdfDoc = pdf;
                 currentPage = 1;
                 totalPagesEl.textContent = pdf.numPages;
+                currentPageEl.textContent = currentPage;
                 pageNumInput.value = currentPage;
                 updateNav();
+
+                // Show canvas, render first page
                 loadingEl.style.display = 'none';
                 canvas.style.display = 'block';
                 renderPage(currentPage);
-                
+                console.log('=== Main: SUCCESS ===');
+
             } catch (error) {
-                showError('Error loading PDF: ' + error.message);
+                console.error('=== ERROR:', error.name, error.message, error.stack);
+                showError('Error cargando el PDF:\n\n' + error.message +
+                    '\n\nIntenta:\n1. Verifica la URL del archivo\n2. Asegúrate que el PDF existe\n3. Recarga la página');
             }
         })();
     </script>
