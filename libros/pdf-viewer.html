@@ -180,13 +180,10 @@
                     // Load PDF.js v3 dynamically using getDocument
                     Promise.all([
                         import('https://esm.sh/pdfjs-dist@3.4.120/build/pdf.mjs')
-                    ]).then(function([pdfjsModule]) {
-                        const getDocument = (pdfjsModule.default || pdfjsModule).getDocument;
-                        const PdfjsLib = pdfjsModule.default || pdfjsModule;
-
-                        if (PdfjsLib && PdfjsLib.GlobalWorkerOptions) {
-                            PdfjsLib.GlobalWorkerOptions.workerSrc = 'https://esm.sh/pdfjs-dist@3.4.120/build/pdf.worker.mjs';
-                        }
+                    }).then(function([pdfjsModule]) {
+                        const pdfjs = pdfjsModule.default || pdfjsModule;
+                        pdfjs.GlobalWorkerOptions.workerSrc = 'https://esm.sh/pdfjs-dist@3.4.120/build/pdf.worker.mjs';
+                        const { getDocument } = pdfjs;
 
                         return getDocument(blobUrl).promise;
                     }).then(function(pdf) {
